@@ -1,22 +1,23 @@
 from datetime import datetime
 import shlex
 
-
 class Planet:
+    """Планета: название, дата открытия, радиус."""
+
     def __init__(self, name, discovery_date, radius):
         self.name = name
         self.discovery_date = discovery_date
         self.radius = radius
 
     def __str__(self):
-        return (
-            f"Планета:\n"
-            f"  Название: {self.name}\n"
-            f"  Дата открытия: {self.discovery_date.strftime('%Y.%m.%d')}\n"
-            f"  Радиус: {self.radius} км"
-        )
+        return (f"Планета: {self.name}\n"
+                f"  Название: {self.name}\n"
+                f"  Дата открытия: {self.discovery_date.strftime('%Y.%m.%d')}\n"
+                f"  Радиус: {self.radius} км")
+
 class Exoplanet(Planet):
     """Экзопланета: добавляет звездную систему."""
+
     def __init__(self, name, discovery_date, radius, star_system):
         super().__init__(name, discovery_date, radius)
         self.star_system = star_system
@@ -29,6 +30,7 @@ class Exoplanet(Planet):
 
 class DwarfPlanet(Planet):
     """Карликовая планета: добавляет признак пояса Койпера."""
+
     def __init__(self, name, discovery_date, radius, is_trans_neptunian):
         super().__init__(name, discovery_date, radius)
         self.is_trans_neptunian = is_trans_neptunian
@@ -38,8 +40,9 @@ class DwarfPlanet(Planet):
                 f"  Пояс Койпера: {self.is_trans_neptunian}\n"
                 f"  Дата открытия: {self.discovery_date.strftime('%Y.%m.%d')}\n"
                 f"  Радиус: {self.radius} км")
+
 class ObjectFactory:
-   @staticmethod
+    @staticmethod
     def create_object(text):
         try:
             parts = shlex.split(text)
@@ -55,6 +58,7 @@ class ObjectFactory:
                 return None
         except (ValueError, IndexError):
             return None
+
     @staticmethod
     def _create_planet(parts):
         name = parts[1]
@@ -78,28 +82,14 @@ class ObjectFactory:
         is_trans_neptunian = parts[4]
         return DwarfPlanet(name, discovery_date, radius, is_trans_neptunian)
 
-        raise ValueError("Неизвестный тип объекта")
-
-
-def main():
-    print("Введите описание объекта:")
-    print('Пример: Планета "Марс" 1659.11.28 3389.5')
-    print('Пример: Планета "нептун')
-    text = input("> ")
-
-    obj = ObjectFactory.create_object(text)
-
-    print("\nСоздан объект:")
-    print(obj)
-
-
 def process_data(lines):
     """Обрабатывает список строк, возвращает список объектов."""
     objects = []
     for line in lines:
-        if line.strip():  # пропускаем пустые строки
+        if line.strip():
             obj = ObjectFactory.create_object(line.strip())
-            objects.append(obj)
+            if obj is not None:
+                objects.append(obj)
     return objects
 
 if __name__ == "__main__":
@@ -112,8 +102,7 @@ if __name__ == "__main__":
 
     print("--- Обработка набора объектов ---")
     results = process_data(data_lines)
-    
+
     for obj in results:
         print(obj)
         print("-" * 30)
-    main()

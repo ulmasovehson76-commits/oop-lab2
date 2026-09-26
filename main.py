@@ -39,7 +39,7 @@ class DwarfPlanet(Planet):
                 f"  Дата открытия: {self.discovery_date.strftime('%Y.%m.%d')}\n"
                 f"  Радиус: {self.radius} км")
 class ObjectFactory:
-    @staticmethod
+   @staticmethod
     def create_object(text):
         try:
             parts = shlex.split(text)
@@ -52,10 +52,9 @@ class ObjectFactory:
             elif obj_type in ("планета", "планеты"):
                 return ObjectFactory._create_planet(parts)
             else:
-                return None  # <-- ВМЕСТО raise ValueError
+                return None
         except (ValueError, IndexError):
-            return None  # <-- ВМЕСТО print и return None
-
+            return None
     @staticmethod
     def _create_planet(parts):
         name = parts[1]

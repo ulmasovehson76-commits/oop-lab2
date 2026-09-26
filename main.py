@@ -42,31 +42,40 @@ class DwarfPlanet(Planet):
 class ObjectFactory:
     @staticmethod
     def create_object(text):
-      
         parts = shlex.split(text)
+        obj_type = parts[0].lower()
 
-        obj_type = parts[0]
+        if obj_type == "экзопланета":
+            return ObjectFactory._create_exoplanet(parts)
+        elif obj_type == "карликоваяпланета":
+            return ObjectFactory._create_dwarf_planet(parts)
+        elif obj_type in ("планета", "планеты"):
+            return ObjectFactory._create_planet(parts)
+        else:
+            raise ValueError(f"Неизвестный тип: {obj_type}")
 
-        if obj_type.lower() == "экзопланета":
-            name = parts[1]
-           discovery_date = datetime.strptime(parts[2], "%Y.%m.%d").date()
-            radius = float(parts[3])
-            star_system = parts[4]
-            return Exoplanet(name, discovery_date, radius, star_system)
+    @staticmethod
+    def _create_planet(parts):
+        name = parts[1]
+        discovery_date = datetime.strptime(parts[2], "%Y.%m.%d").date()
+        radius = float(parts[3])
+        return Planet(name, discovery_date, radius)
 
-        
-        elif obj_type.lower() == "карликоваяпланета":
-            name = parts[1]
-          discovery_date = datetime.strptime(parts[2], "%Y.%m.%d").date()
-            radius = float(parts[3])
-            is_trans_neptunian = parts[4]
-            return DwarfPlanet(name, discovery_date, radius, is_trans_neptunian)
-        elif obj_type.lower() == "планета":
-            name = parts[1]
-            discovery_date = datetime.strptime(parts[2], "%Y.%m.%d").date()
-            radius = float(parts[3])
+    @staticmethod
+    def _create_exoplanet(parts):
+        name = parts[1]
+        discovery_date = datetime.strptime(parts[2], "%Y.%m.%d").date()
+        radius = float(parts[3])
+        star_system = parts[4]
+        return Exoplanet(name, discovery_date, radius, star_system)
 
-            return Planet(name, discovery_date, radius)
+    @staticmethod
+    def _create_dwarf_planet(parts):
+        name = parts[1]
+        discovery_date = datetime.strptime(parts[2], "%Y.%m.%d").date()
+        radius = float(parts[3])
+        is_trans_neptunian = parts[4]
+        return DwarfPlanet(name, discovery_date, radius, is_trans_neptunian)
 
         raise ValueError("Неизвестный тип объекта")
 

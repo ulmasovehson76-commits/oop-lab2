@@ -41,17 +41,20 @@ class DwarfPlanet(Planet):
 class ObjectFactory:
     @staticmethod
     def create_object(text):
-        parts = shlex.split(text)
-        obj_type = parts[0].lower()
+        try:
+            parts = shlex.split(text)
+            obj_type = parts[0].lower()
 
-        if obj_type == "экзопланета":
-            return ObjectFactory._create_exoplanet(parts)
-        elif obj_type == "карликоваяпланета":
-            return ObjectFactory._create_dwarf_planet(parts)
-        elif obj_type in ("планета", "планеты"):
-            return ObjectFactory._create_planet(parts)
-        else:
-            raise ValueError(f"Неизвестный тип: {obj_type}")
+            if obj_type == "экзопланета":
+                return ObjectFactory._create_exoplanet(parts)
+            elif obj_type == "карликоваяпланета":
+                return ObjectFactory._create_dwarf_planet(parts)
+            elif obj_type in ("планета", "планеты"):
+                return ObjectFactory._create_planet(parts)
+            else:
+                return None  # <-- ВМЕСТО raise ValueError
+        except (ValueError, IndexError):
+            return None  # <-- ВМЕСТО print и return None
 
     @staticmethod
     def _create_planet(parts):

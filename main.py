@@ -83,5 +83,27 @@ def main():
     print(obj)
 
 
+def process_data(lines):
+    """Обрабатывает список строк, возвращает список объектов."""
+    objects = []
+    for line in lines:
+        if line.strip():  # пропускаем пустые строки
+            obj = ObjectFactory.create_object(line.strip())
+            objects.append(obj)
+    return objects
+
 if __name__ == "__main__":
+    data_lines = [
+        'Планеты "Марс" 1659.12.28 3389.5',
+        'Экзопланета "Проксима Центавра b" 2016.08.24 1.1 "Проксима Центавра"',
+        'КарликоваяПланета "Плутон" 1930.02.18 1188.3 да',
+        'Планеты "Нептун" 1846.09.23 24622.0'
+    ]
+
+    print("--- Обработка набора объектов ---")
+    results = process_data(data_lines)
+    
+    for obj in results:
+        print(obj)
+        print("-" * 30)
     main()

@@ -15,8 +15,7 @@ class Planet:
             f"  Дата открытия: {self.discovery_date.strftime('%Y.%m.%d')}\n"
             f"  Радиус: {self.radius} км"
         )
-
- class Exoplanet(Planet):
+class Exoplanet(Planet):
     """Экзопланета: добавляет звездную систему."""
     def __init__(self, name, discovery_date, radius, star_system):
         super().__init__(name, discovery_date, radius)
